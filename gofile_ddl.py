@@ -8,20 +8,17 @@ url = ''
 def gofile_dl(url):
     api_uri = 'https://api.gofile.io'
     client = requests.Session()
-    res = client.get(api_uri+'/createAccount').json()
-    
+    res = client.get(f'{api_uri}/createAccount').json()
+
     data = {
         'contentId': url.split('/')[-1],
         'token': res['data']['token'],
         'websiteToken': 'websiteToken',
         'cache': 'true'
     }
-    res = client.get(api_uri+'/getContent', params=data).json()
+    res = client.get(f'{api_uri}/getContent', params=data).json()
 
-    content = []
-    for item in res['data']['contents'].values():
-        content.append(item)
-    
+    content = list(res['data']['contents'].values())
     return {
         'accountToken': data['token'],
         'files': content
